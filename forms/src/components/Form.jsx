@@ -5,7 +5,8 @@ const isEmail = (email) => {
 };
 
 const isPhone = (phone) => {
-  return phone.match(/^([1-9]\d{2})([- .])(\d{3})$2(\d{4})$/);
+  // return phone.match(/^([1-9]\d{2})([- .])(\d{3})$2(\d{4})$/);
+  return true;
 };
 
 const validate = (formData) => {
@@ -44,7 +45,7 @@ export function Form() {
     notifications: false,
   });
 
-  const [errors, setErrors] = useState([]);
+  const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
     setFormData((prev) => ({
@@ -56,14 +57,19 @@ export function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
     const errors = validate(formData);
     console.log(errors);
+    if (Object.keys(errors).length) {
+      setErrors(errors);
+      return;
+    }
+    console.log("success", formData);
   };
 
   return (
     <div>
       <h1>My Form</h1>
+      {!!Object.keys(errors).length && JSON.stringify(errors)}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="name">Name</label>
